@@ -53,17 +53,19 @@ export function FestivalSchedule({ festivalData, actPriorities, onPriorityChange
 
   return (
     <Tabs defaultValue="Wednesday" className="w-full">
-      <TabsList className="grid w-full grid-cols-6 mb-6">
+      {/* Mobile-optimized day tabs */}
+      <TabsList className="grid w-full grid-cols-6 mb-4 sm:mb-6 h-auto">
         {days.map((day) => (
-          <TabsTrigger key={day} value={day} className="text-xs">
-            {day.slice(0, 3)}
+          <TabsTrigger key={day} value={day} className="text-xs p-2">
+            <span className="hidden sm:inline">{day.slice(0, 3)}</span>
+            <span className="sm:hidden">{day.slice(0, 1)}</span>
           </TabsTrigger>
         ))}
       </TabsList>
 
       {days.map((day) => (
         <TabsContent key={day} value={day}>
-          <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 xl:grid-cols-3">
             {festivalData.stages.map((stage) => {
               const dayActs = stage.acts.filter((act) => act.day === day)
               if (dayActs.length === 0) return null
@@ -72,11 +74,11 @@ export function FestivalSchedule({ festivalData, actPriorities, onPriorityChange
               const sortedActs = [...dayActs].sort(sortActsByTimeDesc)
 
               return (
-                <Card key={`${day}-${stage.id}`}>
+                <Card key={`${day}-${stage.id}`} className="h-fit">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
-                      {stage.name}
+                      <span className="truncate">{stage.name}</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -94,21 +96,23 @@ export function FestivalSchedule({ festivalData, actPriorities, onPriorityChange
                                 : "hover:bg-gray-50"
                           }`}
                         >
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1">
-                              <h4 className="font-medium">{act.name}</h4>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock className="h-3 w-3" />
-                                {act.time}
+                          <div className="flex items-start justify-between mb-2 gap-2">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-medium text-sm sm:text-base truncate">{act.name}</h4>
+                              <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                <Clock className="h-3 w-3 flex-shrink-0" />
+                                <span className="truncate">{act.time}</span>
                               </div>
                             </div>
-                            <PriorityPicker
-                              currentPriority={priority}
-                              onPriorityChange={(newPriority) => onPriorityChange(act.id, newPriority)}
-                              size="sm"
-                            />
+                            <div className="flex-shrink-0">
+                              <PriorityPicker
+                                currentPriority={priority}
+                                onPriorityChange={(newPriority) => onPriorityChange(act.id, newPriority)}
+                                size="sm"
+                              />
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             {act.genre && act.genre !== "TBA" && (
                               <Badge variant="secondary" className="text-xs">
                                 {act.genre}

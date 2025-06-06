@@ -68,16 +68,16 @@ export function SearchAndFilter({
   const activeFiltersCount = [selectedDay, selectedStage, selectedGenre].filter((f) => f !== "all").length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
             Search & Filter Acts
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex-1">
               <Input
                 placeholder="Search acts, genres..."
@@ -86,9 +86,13 @@ export function SearchAndFilter({
                 className="w-full"
               />
             </div>
-            <Button variant="outline" onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 w-full sm:w-auto"
+            >
               <Filter className="h-4 w-4" />
-              Filters
+              <span>Filters</span>
               {activeFiltersCount > 0 && (
                 <Badge variant="secondary" className="ml-1">
                   {activeFiltersCount}
@@ -98,7 +102,7 @@ export function SearchAndFilter({
           </div>
 
           {showFilters && (
-            <div className="grid gap-4 md:grid-cols-3 p-4 border rounded-lg bg-muted/50">
+            <div className="grid gap-4 sm:grid-cols-3 p-4 border rounded-lg bg-muted/50">
               <div>
                 <label className="text-sm font-medium mb-2 block">Day</label>
                 <Select value={selectedDay} onValueChange={onDayChange}>
@@ -150,7 +154,7 @@ export function SearchAndFilter({
                 </Select>
               </div>
 
-              <div className="md:col-span-3">
+              <div className="sm:col-span-3">
                 <Button variant="outline" onClick={clearFilters} className="w-full">
                   Clear All Filters
                 </Button>
@@ -162,13 +166,13 @@ export function SearchAndFilter({
 
       <Card>
         <CardHeader>
-          <CardTitle>Search Results ({allActs.length} acts)</CardTitle>
+          <CardTitle className="text-base sm:text-lg">Search Results ({allActs.length} acts)</CardTitle>
         </CardHeader>
         <CardContent>
           {allActs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">No acts found matching your criteria</div>
           ) : (
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {allActs.map((act) => (
                 <div
                   key={act.id}
@@ -176,22 +180,25 @@ export function SearchAndFilter({
                     myPicks.includes(act.id) ? "bg-purple-50 border-purple-200" : "hover:bg-gray-50"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h4 className="font-medium">{act.name}</h4>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                        <Clock className="h-3 w-3" />
-                        {act.day} {act.time}
+                  <div className="flex items-start justify-between mb-2 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-sm sm:text-base truncate">{act.name}</h4>
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mt-1">
+                        <Clock className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">
+                          {act.day} {act.time}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
-                        {act.stage}
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                        <MapPin className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{act.stage}</span>
                       </div>
                     </div>
                     <Button
                       variant={myPicks.includes(act.id) ? "default" : "outline"}
                       size="sm"
                       onClick={() => onTogglePick(act.id)}
+                      className="flex-shrink-0"
                     >
                       <Star className={`h-4 w-4 ${myPicks.includes(act.id) ? "fill-current" : ""}`} />
                     </Button>

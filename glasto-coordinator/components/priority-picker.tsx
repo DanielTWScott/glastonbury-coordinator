@@ -21,24 +21,33 @@ export function PriorityPicker({ currentPriority, onPriorityChange, size = "md" 
         variant={currentPriority === "must-see" ? "default" : "outline"}
         size={buttonSize}
         onClick={() => onPriorityChange(currentPriority === "must-see" ? "none" : "must-see")}
-        className={currentPriority === "must-see" ? "bg-red-600 hover:bg-red-700" : ""}
+        className={`${currentPriority === "must-see" ? "bg-red-600 hover:bg-red-700" : ""} ${
+          size === "sm" ? "px-2 py-1" : ""
+        }`}
       >
         <Heart className={`${iconSize} ${currentPriority === "must-see" ? "fill-current" : ""}`} />
-        {size !== "sm" && <span className="ml-1">Must See</span>}
+        {size !== "sm" && <span className="ml-1 hidden sm:inline">Must See</span>}
       </Button>
 
       <Button
         variant={currentPriority === "like-to-go" ? "default" : "outline"}
         size={buttonSize}
         onClick={() => onPriorityChange(currentPriority === "like-to-go" ? "none" : "like-to-go")}
-        className={currentPriority === "like-to-go" ? "bg-green-600 hover:bg-green-700" : ""}
+        className={`${currentPriority === "like-to-go" ? "bg-green-600 hover:bg-green-700" : ""} ${
+          size === "sm" ? "px-2 py-1" : ""
+        }`}
       >
         <Check className={`${iconSize} ${currentPriority === "like-to-go" ? "stroke-2" : ""}`} />
-        {size !== "sm" && <span className="ml-1">Like to Go</span>}
+        {size !== "sm" && <span className="ml-1 hidden sm:inline">Like to Go</span>}
       </Button>
 
       {currentPriority !== "none" && (
-        <Button variant="ghost" size={buttonSize} onClick={() => onPriorityChange("none")}>
+        <Button
+          variant="ghost"
+          size={buttonSize}
+          onClick={() => onPriorityChange("none")}
+          className={size === "sm" ? "px-2 py-1" : ""}
+        >
           <X className={iconSize} />
         </Button>
       )}
@@ -52,17 +61,19 @@ export function PriorityBadge({ priority }: { priority: Priority }) {
   return (
     <Badge
       variant={priority === "must-see" ? "destructive" : "default"}
-      className={priority === "like-to-go" ? "bg-green-600" : ""}
+      className={`${priority === "like-to-go" ? "bg-green-600" : ""} text-xs`}
     >
       {priority === "must-see" ? (
         <>
           <Heart className="h-3 w-3 mr-1 fill-current" />
-          Must See
+          <span className="hidden sm:inline">Must See</span>
+          <span className="sm:hidden">Must</span>
         </>
       ) : (
         <>
           <Check className="h-3 w-3 mr-1 stroke-2" />
-          Like to Go
+          <span className="hidden sm:inline">Like to Go</span>
+          <span className="sm:hidden">Like</span>
         </>
       )}
     </Badge>

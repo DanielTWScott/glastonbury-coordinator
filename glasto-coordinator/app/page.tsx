@@ -155,48 +155,68 @@ export default function GlastonburyCoordinator() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      <div className="container mx-auto p-4">
-        <div className="text-center mb-8 pt-8">
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-            <Music className="h-8 w-8" />
-            Glastonbury 2025 Coordinator
+      <div className="container mx-auto p-2 sm:p-4">
+        <div className="text-center mb-4 sm:mb-8 pt-4 sm:pt-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+            <Music className="h-6 w-6 sm:h-8 sm:w-8" />
+            <span className="hidden sm:inline">Glastonbury 2025 Coordinator</span>
+            <span className="sm:hidden">Glasto 2025</span>
           </h1>
-          <p className="text-blue-200">Plan your festival experience and coordinate with friends</p>
-          <div className="flex items-center justify-center gap-4 mt-4">
-            <Badge variant="secondary">{festivalData.dates}</Badge>
-            <Badge variant="outline" className="text-white border-white">
-              {totalActs} Official Acts • {festivalData.stages.length} Stages
+          <p className="text-blue-200 text-sm sm:text-base px-2">
+            Plan your festival experience and coordinate with friends
+          </p>
+
+          {/* Mobile-optimized badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+            <Badge variant="secondary" className="text-xs">
+              {festivalData.dates}
             </Badge>
-            <Badge variant="default" className="bg-green-600">
+            <Badge variant="outline" className="text-white border-white text-xs">
+              <span className="hidden sm:inline">
+                {totalActs} Official Acts • {festivalData.stages.length} Stages
+              </span>
+              <span className="sm:hidden">{totalActs} Acts</span>
+            </Badge>
+            <Badge variant="default" className="bg-green-600 text-xs">
               <Globe className="h-3 w-3 mr-1" />
-              Complete Official Lineup
+              <span className="hidden sm:inline">Complete Official Lineup</span>
+              <span className="sm:hidden">Official</span>
             </Badge>
           </div>
 
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <Button variant="outline" size="sm" onClick={generateRandomPicks} className="flex items-center gap-1">
+          {/* Mobile-optimized action buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={generateRandomPicks}
+              className="flex items-center gap-1 text-xs"
+            >
               <Shuffle className="h-3 w-3" />
-              Random Picks
+              <span className="hidden sm:inline">Random Picks</span>
+              <span className="sm:hidden">Random</span>
             </Button>
-            <Button variant="outline" size="sm" onClick={clearAllData} className="flex items-center gap-1">
-              Clear All
+            <Button variant="outline" size="sm" onClick={clearAllData} className="flex items-center gap-1 text-xs">
+              <span className="hidden sm:inline">Clear All</span>
+              <span className="sm:hidden">Clear</span>
             </Button>
           </div>
 
+          {/* Mobile-optimized stats */}
           {(mustSeeCount > 0 || likeToGoCount > 0) && (
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <Badge variant="destructive" className="bg-red-600">
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+              <Badge variant="destructive" className="bg-red-600 text-xs">
                 <Heart className="h-3 w-3 mr-1 fill-current" />
-                {mustSeeCount} Must See
+                {mustSeeCount} <span className="hidden sm:inline">Must See</span>
               </Badge>
-              <Badge variant="default" className="bg-green-600">
+              <Badge variant="default" className="bg-green-600 text-xs">
                 <Check className="h-3 w-3 mr-1 stroke-2" />
-                {likeToGoCount} Like to Go
+                {likeToGoCount} <span className="hidden sm:inline">Like to Go</span>
               </Badge>
               {sharedPicks.length > 0 && (
-                <Badge variant="outline" className="text-white border-white">
+                <Badge variant="outline" className="text-white border-white text-xs">
                   <Users className="h-3 w-3 mr-1" />
-                  {sharedPicks.length} Friends Connected
+                  {sharedPicks.length} <span className="hidden sm:inline">Friends Connected</span>
                 </Badge>
               )}
             </div>
@@ -207,7 +227,7 @@ export default function GlastonburyCoordinator() {
         {showSavedMessage && (
           <Alert className="mb-4 bg-green-50 border-green-200">
             <Save className="h-4 w-4" />
-            <AlertDescription className="text-green-700">
+            <AlertDescription className="text-green-700 text-sm">
               Your picks have been automatically saved! They'll be here when you return.
             </AlertDescription>
           </Alert>
@@ -222,34 +242,54 @@ export default function GlastonburyCoordinator() {
         />
 
         <Tabs defaultValue="schedule" className="w-full">
-          <TabsList className="grid w-full grid-cols-7 mb-6">
-            <TabsTrigger value="schedule" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              Schedule
+          {/* Mobile-optimized tab list */}
+          <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 mb-4 sm:mb-6 h-auto">
+            <TabsTrigger value="schedule" className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs">
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Schedule</span>
+              <span className="sm:hidden">Sched</span>
             </TabsTrigger>
-            <TabsTrigger value="clashes" className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4" />
-              Clashes
+            <TabsTrigger value="my-picks" className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs">
+              <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">My Picks ({mustSeeCount + likeToGoCount})</span>
+              <span className="sm:hidden">Picks</span>
+              {mustSeeCount + likeToGoCount > 0 && (
+                <Badge variant="secondary" className="text-xs ml-1 sm:hidden">
+                  {mustSeeCount + likeToGoCount}
+                </Badge>
+              )}
             </TabsTrigger>
-            <TabsTrigger value="stages" className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              Stages
+            <TabsTrigger value="clashes" className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs">
+              <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Clashes</span>
+              <span className="sm:hidden">Clash</span>
             </TabsTrigger>
-            <TabsTrigger value="search" className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              Search
+            <TabsTrigger value="search" className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs">
+              <Search className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Search</span>
+              <span className="sm:hidden">Find</span>
             </TabsTrigger>
-            <TabsTrigger value="my-picks" className="flex items-center gap-2">
-              <Heart className="h-4 w-4" />
-              My Picks ({mustSeeCount + likeToGoCount})
+            <TabsTrigger
+              value="stages"
+              className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs col-span-4 sm:col-span-1"
+            >
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span>Stages</span>
             </TabsTrigger>
-            <TabsTrigger value="sharing" className="flex items-center gap-2">
-              <Share2 className="h-4 w-4" />
-              Share
+            <TabsTrigger
+              value="sharing"
+              className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs col-span-2 sm:col-span-1"
+            >
+              <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span>Share</span>
             </TabsTrigger>
-            <TabsTrigger value="group-plan" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Group Plan
+            <TabsTrigger
+              value="group-plan"
+              className="flex flex-col sm:flex-row items-center gap-1 p-2 text-xs col-span-2 sm:col-span-1"
+            >
+              <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Group Plan</span>
+              <span className="sm:hidden">Group</span>
             </TabsTrigger>
           </TabsList>
 
